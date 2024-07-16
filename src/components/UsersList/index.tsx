@@ -2,17 +2,14 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { userItem } from '../../interfaces/main';
 import { fetchUsers } from '../../api';
 import UserCard from '../UserCard';
+import { filterUsersList } from '../../utils/users';
 
 
 const UserList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [users, setUsers] = useState<userItem[]>([]);
 
-  const filteredUsers = useMemo(() => users.filter(user =>
-    `${user.name.firstname} ${user.name.lastname}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.phone.toLowerCase().includes(searchTerm.toLowerCase())
-  ), [searchTerm, users])
+  const filteredUsers = useMemo(() => filterUsersList(searchTerm, users), [searchTerm, users])
 
   const handleSetSearchTerm = useCallback((term: string) => {
     setSearchTerm(term)
